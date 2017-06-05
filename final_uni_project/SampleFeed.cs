@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace final_uni_project
 {
@@ -72,7 +73,11 @@ namespace final_uni_project
             {
                 while (true)
                 {
-                    DataReceived(this, new GraphArgs(RandomGraph()));
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        DataReceived(this, new GraphArgs(RandomGraph()));
+                    });
+
                     await Task.Delay(3000);
                 }
             });

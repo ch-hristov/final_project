@@ -8,7 +8,7 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <ms:HelixViewport3D ItemsSource="{Binding ViewController.Models}">
-            
+
         </ms:HelixViewport3D>
     </Grid>
 </Window>

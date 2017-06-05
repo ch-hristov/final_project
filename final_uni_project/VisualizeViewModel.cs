@@ -9,12 +9,18 @@ namespace final_uni_project
     {
         private IDataFeed _feed;
         private IBidirectionalGraph<Vertex, Edge> _graph;
+        private IGraphCoordinator Coordinator { get; set; }
 
         public IBidirectionalGraph<Vertex, Edge> Graph
         {
             get
             {
                 return _graph;
+            }
+            set
+            {
+                _graph = value;
+                Coordinator.Coordinate(_graph);
             }
         }
 
@@ -28,9 +34,11 @@ namespace final_uni_project
 
             _feed.DataReceived += ((a, b) =>
               {
-                  _graph = ParseGraph(b);
+                  Graph = ParseGraph(b);
                   Updated(this, new EventArgs());
               });
+
+            Coordinator = new GraphCoordinator();
 
             var viewController = new ViewController();
 
@@ -39,7 +47,7 @@ namespace final_uni_project
                 viewController.Load(Graph);
             };
 
-            this.ViewController = viewController;
+            ViewController = viewController;
         }
 
         private IBidirectionalGraph<Vertex, Edge> ParseGraph(GraphArgs b)
@@ -53,14 +61,22 @@ namespace final_uni_project
             var vertices = graph.Vertices.ToList();
 
             i = 0;
+
             b.Weights.ForEach(node =>
             {
                 int j = 0;
                 foreach (var edge in node)
                 {
-                    graph.AddEdge(new Edge(vertices[i], vertices[j]));
+                    Edge e;
+                    graph.AddEdge(e = new Edge(vertices[i], vertices[j])
+                    {
+                        Weight = edge
+                    });
+
+                    vertices[i].Edges.Add(e);
                     j++;
                 }
+                i++;
             });
 
             return graph;
