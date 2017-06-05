@@ -78,7 +78,7 @@ namespace final_uni_project
                         DataReceived(this, new GraphArgs(RandomGraph()));
                     });
 
-                    await Task.Delay(3000);
+                    await Task.Delay(300);
                 }
             });
         }
