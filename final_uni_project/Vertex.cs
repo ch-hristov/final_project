@@ -38,7 +38,23 @@ namespace final_uni_project
                 IsReceiver = Edges.All(x => x.Target.ID == x.Source.ID || !double.IsNegativeInfinity(x.Weight));
             };
 
-            this.Edges = collection;
+            Edges = collection;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Vertex)) return false;
+            var node = obj as Vertex;
+            return node.ID == ID;
+        }
+        public override int GetHashCode()
+        {
+            return ID;
+        }
+
+        public bool IsConnectedTo(Vertex v)
+        {
+            return Edges.Any(edge => edge.Target == v && !double.IsNegativeInfinity(edge.Weight));
         }
     }
 }
