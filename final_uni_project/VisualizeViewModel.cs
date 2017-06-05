@@ -10,6 +10,16 @@ namespace final_uni_project
         private IDataFeed _feed;
         private IBidirectionalGraph<Vertex, Edge> _graph;
 
+        public IBidirectionalGraph<Vertex, Edge> Graph
+        {
+            get
+            {
+                return _graph;
+            }
+        }
+
+        public ViewController ViewController { get; private set; }
+
         public VisualizeViewModel()
         {
             _feed = new SampleFeed(new[] { true, true, true, false });
@@ -19,7 +29,17 @@ namespace final_uni_project
             _feed.DataReceived += ((a, b) =>
               {
                   _graph = ParseGraph(b);
+                  Updated(this, new EventArgs());
               });
+
+            var viewController = new ViewController();
+
+            Updated += (a, b) =>
+            {
+                viewController.Load(Graph);
+            };
+
+            this.ViewController = viewController;
         }
 
         private IBidirectionalGraph<Vertex, Edge> ParseGraph(GraphArgs b)
@@ -45,5 +65,7 @@ namespace final_uni_project
 
             return graph;
         }
+
+        public event EventHandler Updated = delegate { };
     }
 }

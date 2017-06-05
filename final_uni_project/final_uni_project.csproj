@@ -78,6 +78,7 @@
     <Compile Include="IDataFeed.cs" />
     <Compile Include="SampleFeed.cs" />
     <Compile Include="Vertex.cs" />
+    <Compile Include="ViewController.cs" />
     <Compile Include="VisualizeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

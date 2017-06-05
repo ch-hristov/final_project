@@ -7,8 +7,8 @@ namespace final_uni_project
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new VisualizeViewModel();
+            var vm = new VisualizeViewModel();
+            DataContext = vm;
         }
     }
 }

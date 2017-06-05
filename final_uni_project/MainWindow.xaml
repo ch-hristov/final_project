@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ms="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <ms:HelixViewport3D ItemsSource="{Binding ViewController.Models}">
+            
+        </ms:HelixViewport3D>
     </Grid>
 </Window>
