@@ -79,6 +79,7 @@
     <Compile Include="IDataFeed.cs" />
     <Compile Include="IGraphCoordinator.cs" />
     <Compile Include="SampleFeed.cs" />
+    <Compile Include="SampleFeedNode.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="ViewController.cs" />
     <Compile Include="VisualizeViewModel.cs" />

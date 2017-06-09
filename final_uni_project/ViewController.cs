@@ -24,8 +24,8 @@ namespace final_uni_project
         public void Load(IBidirectionalGraph<Vertex, Edge> graph)
         {
             Models.Clear();
-            this._vertexVisuals.Clear();
-            this._edgeVisuals.Clear();
+            _vertexVisuals.Clear();
+            _edgeVisuals.Clear();
 
             Models.Add(new SunLight());
 

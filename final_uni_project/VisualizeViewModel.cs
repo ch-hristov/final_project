@@ -28,7 +28,7 @@ namespace final_uni_project
 
         public VisualizeViewModel()
         {
-            _feed = new SampleFeed(new[] { true, true, true, false });
+            _feed = new SampleFeed();
 
             _feed.Start();
 

@@ -11,54 +11,69 @@ namespace final_uni_project
     {
         public event EventHandler<GraphArgs> DataReceived = delegate { };
         private Random _rand = new Random();
-        private List<List<double>> _prev;
+        private List<List<SampleFeedEdge>> _prev;
         private const int normalizingFactor = 10;
-        public List<bool> Connectivity { get; private set; }
 
-        public SampleFeed(IEnumerable<bool> constants)
+        private List<List<SampleFeedEdge>> RandomGraph(int otherNodes, int movingNodes)
         {
-            Connectivity = constants.ToList();
+            var resultGraph = new List<List<SampleFeedEdge>>();
+            var generateNew = false;
+
+            if (_prev == null) generateNew = true;
+
+            if (generateNew)
+                return _prev = GenerateGraph(otherNodes, movingNodes);
+
+            else return _prev = UpdateGraph(movingNodes);
         }
 
-        private List<List<double>> RandomGraph()
+        private List<List<SampleFeedEdge>> UpdateGraph(int movingNodes)
         {
-            var result = new List<List<double>>();
-
-            for (int i = 0; i < Connectivity.Count; i++)
+            for (int i = 0; i < movingNodes; i++)
             {
-                var ans = new List<double>();
-
-                for (int j = 0; j < Connectivity.Count; j++)
+                for (int j = 0; j < _prev[i].Count; j++)
                 {
-                    if (j == i || (!Connectivity[j] && !Connectivity[i]) || (Connectivity[i]))
-                    {
-                        ans.Add(double.NegativeInfinity);
-                        continue;
-                    }
+                    if (_prev[i][j] == SampleFeedEdge.Empty) continue;
 
-                    var weight = _prev == null ?
-                        _rand.NextDouble() * normalizingFactor : (_prev[i][j] + _rand.NextDouble() / normalizingFactor)
-                        * (_rand.NextDouble() <= 0.5 ? -1 : 1);
+                    _prev[i][j].StepInDirection();
 
-                    if (Connectivity[j])
-                        result[j][i] = weight;
-
-                    ans.Add(weight);
                 }
-
-                result.Add(ans);
             }
 
-#if DEBUG
-            PrintGraph(result);
-#endif
-
-
-            _prev = result;
-            return result;
+            return _prev;
         }
 
-        private void PrintGraph(List<List<double>> result)
+        private List<List<SampleFeedEdge>> GenerateGraph(int otherNodes, int movingNodes)
+        {
+            var graph = new List<List<SampleFeedEdge>>();
+
+            int total = otherNodes + movingNodes;
+
+            for (int i = 0; i < total; i++)
+            {
+                var connectivity = new List<SampleFeedEdge>();
+
+                for (int j = 0; j < total; j++)
+                    connectivity.Add(SampleFeedEdge.Empty);
+
+                graph.Add(connectivity);
+            }
+
+            for (int i = movingNodes; i < graph.Count; i++)
+            {
+                for (int j = 0; j < movingNodes; j++)
+                {
+                    bool forward = _rand.NextDouble() <= 0.5 ? true : false;
+                    if (graph[i][j].Distance == double.NegativeInfinity) graph[i][j].Distance = 0.0;
+                    graph[i][j].Distance = forward ? graph[i][j].Distance + _rand.NextDouble()
+                        : graph[i][j].Distance - _rand.NextDouble();
+                }
+            }
+
+            return graph;
+        }
+
+        private void PrintGraph(List<List<SampleFeedEdge>> result)
         {
             result.ForEach((list) =>
             {
@@ -75,7 +90,12 @@ namespace final_uni_project
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        DataReceived(this, new GraphArgs(RandomGraph()));
+                        var g = RandomGraph(5, 2).Select((node) =>
+                        {
+                            return node.Select(z => z.Distance).ToList();
+                        }).ToList();
+
+                        DataReceived(this, new GraphArgs(g));
                     });
 
                     await Task.Delay(300);
