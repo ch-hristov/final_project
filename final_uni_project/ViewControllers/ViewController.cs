@@ -6,6 +6,7 @@ using HelixToolkit.Wpf;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace final_uni_project
 {
@@ -35,7 +36,7 @@ namespace final_uni_project
             Models.Clear();
             _vertexVisuals.Clear();
             _edgeVisuals.Clear();
-            //RenderPlane();
+
 
             Models.Add(new SunLight());
 
@@ -68,18 +69,26 @@ namespace final_uni_project
                     _edgeVisuals.Add(edge, lv3);
                 }
             }
+            RenderPlane();
         }
 
         private void RenderPlane()
         {
-            var bill = new RectangleVisual3D()
+            try
             {
-                Origin = _camera.CameraPosition,
-                Width = 0,
-                Fill = Brushes.Blue
-            };
+                var bill = new RectangleVisual3D()
+                {
+                    Origin = this.Models.Where(x => x is SphereVisual3D).Cast<SphereVisual3D>().First().Center,
+                    Width = 10,
+                    Fill = Brushes.Red
+                };
 
-            Models.Add(bill);
+                Models.Add(bill);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
