@@ -6,9 +6,7 @@
         xmlns:ms="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <ms:HelixViewport3D ItemsSource="{Binding ViewController.Models}">
-
-        </ms:HelixViewport3D>
+    <Grid x:Name="grid">
+        <Label Background="Red" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding Camera.Position}"></Label>
     </Grid>
 </Window>

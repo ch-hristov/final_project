@@ -72,17 +72,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataFeed.cs" />
-    <Compile Include="Edge.cs" />
-    <Compile Include="GraphArgs.cs" />
-    <Compile Include="GraphCoordinator.cs" />
-    <Compile Include="IDataFeed.cs" />
-    <Compile Include="IGraphCoordinator.cs" />
-    <Compile Include="SampleFeed.cs" />
-    <Compile Include="SampleFeedNode.cs" />
-    <Compile Include="Vertex.cs" />
-    <Compile Include="ViewController.cs" />
-    <Compile Include="VisualizeViewModel.cs" />
+    <Compile Include="Feed\DataFeed.cs" />
+    <Compile Include="QuickGraph\Edge.cs" />
+    <Compile Include="Feed\GraphArgs.cs" />
+    <Compile Include="Coordination\GraphCoordinator.cs" />
+    <Compile Include="Feed\IDataFeed.cs" />
+    <Compile Include="Coordination\IGraphCoordinator.cs" />
+    <Compile Include="Feed\SampleFeed.cs" />
+    <Compile Include="Feed\SampleFeedNode.cs" />
+    <Compile Include="QuickGraph\Vertex.cs" />
+    <Compile Include="ViewControllers\ViewController.cs" />
+    <Compile Include="ViewControllers\VisualizeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -123,8 +123,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="QuickGraph\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

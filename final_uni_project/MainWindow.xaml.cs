@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using HelixToolkit.Wpf;
+using System.Windows;
+using System.Windows.Data;
 
 namespace final_uni_project
 {
@@ -7,8 +9,10 @@ namespace final_uni_project
         public MainWindow()
         {
             InitializeComponent();
-            var vm = new VisualizeViewModel();
-            DataContext = vm;
+            var port = new HelixViewport3D();
+            var vm = new VisualizeViewModel(port);
+            port.ItemsSource = vm.ViewController.Models;
+            grid.Children.Add(port);
         }
     }
 }

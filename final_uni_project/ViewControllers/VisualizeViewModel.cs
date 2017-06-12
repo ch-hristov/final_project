@@ -1,4 +1,5 @@
-﻿using QuickGraph;
+﻿using HelixToolkit.Wpf;
+using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace final_uni_project
 
         public ViewController ViewController { get; private set; }
 
-        public VisualizeViewModel()
+        public VisualizeViewModel(HelixViewport3D port)
         {
             _feed = new SampleFeed();
 
@@ -40,7 +41,7 @@ namespace final_uni_project
 
             Coordinator = new GraphCoordinator();
 
-            var viewController = new ViewController();
+            var viewController = new ViewController(port.CameraController);
 
             Updated += (a, b) =>
             {
