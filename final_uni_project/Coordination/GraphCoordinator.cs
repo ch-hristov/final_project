@@ -22,7 +22,7 @@ namespace final_uni_project
         private void DeterminePosition(Vertex vertex, IBidirectionalGraph<Vertex, Edge> graph)
         {
             if (vertex.IsReceiver)
-                vertex.Position = new Point3D(_random.Next(5), _random.Next(5), _random.Next(5));
+                vertex.Position = new Point3D(_random.Next(10), _random.Next(10), _random.Next(10));
             else
             {
                 vertex.Position = new Point3D(_random.NextDouble(), _random.NextDouble(), _random.NextDouble());

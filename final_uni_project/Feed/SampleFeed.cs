@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,15 +87,17 @@ namespace final_uni_project
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        var g = RandomGraph(5, 2).Select((node) =>
+                        int staticCount = int.Parse(ConfigurationManager.AppSettings["Static"]);
+                        int movingCount = int.Parse(ConfigurationManager.AppSettings["Moving"]);
+                        var g = RandomGraph(movingCount, staticCount).Select((node) =>
                         {
                             return node.Select(z => z).ToList();
                         }).ToList();
 
-                        DataReceived(this, new GraphArgs(g, 2));
+                        DataReceived(this, new GraphArgs(g, movingCount));
                     });
 
-                    await Task.Delay(300);
+                    await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
                 }
             });
         }

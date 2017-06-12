@@ -37,7 +37,6 @@ namespace final_uni_project
             _vertexVisuals.Clear();
             _edgeVisuals.Clear();
 
-
             Models.Add(new SunLight());
 
             foreach (var node in graph.Vertices)
@@ -46,7 +45,7 @@ namespace final_uni_project
                 Models.Add(visual = new SphereVisual3D()
                 {
                     Center = node.Position,
-                    Radius = 1,
+                    Radius = node.IsReceiver ? 1 : 0.2,
                     Fill = node.IsReceiver ? Brushes.Red : Brushes.Green,
                     BackMaterial = new DiffuseMaterial(Brushes.Red)
                 });
@@ -69,26 +68,27 @@ namespace final_uni_project
                     _edgeVisuals.Add(edge, lv3);
                 }
             }
-            RenderPlane();
+
+            //RenderPlane();
         }
 
-        private void RenderPlane()
-        {
-            try
-            {
-                var bill = new RectangleVisual3D()
-                {
-                    Origin = this.Models.Where(x => x is SphereVisual3D).Cast<SphereVisual3D>().First().Center,
-                    Width = 10,
-                    Fill = Brushes.Red
-                };
+        //private void RenderPlane()
+        //{
+        //    try
+        //    {
+        //        var bill = new RectangleVisual3D()
+        //        {
+        //            Origin = this.Models.Where(x => x is SphereVisual3D).Cast<SphereVisual3D>().First().Center,
+        //            Width = 10,
+        //            Fill = Brushes.Red
+        //        };
 
-                Models.Add(bill);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
+        //        Models.Add(bill);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex);
+        //    }
+        //}
     }
 }

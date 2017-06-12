@@ -41,7 +41,6 @@ namespace final_uni_project
 
             Coordinator = new GraphCoordinator();
 
-
             var viewController = new ViewController(port.CameraController);
 
             Updated += (a, b) =>
