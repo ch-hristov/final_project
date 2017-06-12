@@ -16,14 +16,17 @@ namespace final_uni_project
         public void Coordinate(IBidirectionalGraph<Vertex, Edge> graph)
         {
             foreach (var vertex in graph.Vertices)
-            {
                 DeterminePosition(vertex, graph);
-            }
         }
 
         private void DeterminePosition(Vertex vertex, IBidirectionalGraph<Vertex, Edge> graph)
         {
-            vertex.Position = new Point3D(_random.Next(10), _random.Next(10), _random.Next(10));
+            if (vertex.IsReceiver)
+                vertex.Position = new Point3D(_random.Next(5), _random.Next(5), _random.Next(5));
+            else
+            {
+                vertex.Position = new Point3D(_random.NextDouble(), _random.NextDouble(), _random.NextDouble());
+            }
         }
     }
 }

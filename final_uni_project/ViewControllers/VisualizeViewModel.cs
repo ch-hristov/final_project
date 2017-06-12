@@ -41,10 +41,12 @@ namespace final_uni_project
 
             Coordinator = new GraphCoordinator();
 
+
             var viewController = new ViewController(port.CameraController);
 
             Updated += (a, b) =>
             {
+                Coordinator.Coordinate(Graph);
                 viewController.Load(Graph);
             };
 
@@ -57,7 +59,10 @@ namespace final_uni_project
             int i = 0;
 
             foreach (var node in b.Weights)
-                graph.AddVertex(new Vertex(i++));
+            {
+                graph.AddVertex(new Vertex(i, i < b.MovingTargets));
+                i++;
+            }
 
             var vertices = graph.Vertices.ToList();
 

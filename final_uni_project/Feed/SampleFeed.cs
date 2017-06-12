@@ -11,12 +11,12 @@ namespace final_uni_project
     {
         public event EventHandler<GraphArgs> DataReceived = delegate { };
         private Random _rand = new Random();
-        private List<List<SampleFeedEdge>> _prev;
+        private List<List<double>> _prev;
         private const int normalizingFactor = 10;
 
-        private List<List<SampleFeedEdge>> RandomGraph(int otherNodes, int movingNodes)
+        private List<List<double>> RandomGraph(int otherNodes, int movingNodes)
         {
-            var resultGraph = new List<List<SampleFeedEdge>>();
+            var resultGraph = new List<List<double>>();
             var generateNew = false;
 
             if (_prev == null) generateNew = true;
@@ -27,15 +27,13 @@ namespace final_uni_project
             else return _prev = UpdateGraph(movingNodes);
         }
 
-        private List<List<SampleFeedEdge>> UpdateGraph(int movingNodes)
+        private List<List<double>> UpdateGraph(int movingNodes)
         {
             for (int i = 0; i < movingNodes; i++)
             {
-                for (int j = 0; j < _prev[i].Count; j++)
+                for (int j = movingNodes; j < _prev[i].Count; j++)
                 {
-                    if (_prev[i][j] == SampleFeedEdge.Empty) continue;
-
-                    _prev[i][j].StepInDirection();
+                    _prev[i][j] += (0.1);
 
                 }
             }
@@ -43,37 +41,35 @@ namespace final_uni_project
             return _prev;
         }
 
-        private List<List<SampleFeedEdge>> GenerateGraph(int otherNodes, int movingNodes)
+        private List<List<double>> GenerateGraph(int otherNodes, int movingNodes)
         {
-            var graph = new List<List<SampleFeedEdge>>();
+            var graph = new List<List<double>>();
 
             int total = otherNodes + movingNodes;
 
             for (int i = 0; i < total; i++)
             {
-                var connectivity = new List<SampleFeedEdge>();
+                var connectivity = new List<double>();
 
                 for (int j = 0; j < total; j++)
-                    connectivity.Add(SampleFeedEdge.Empty);
+                    connectivity.Add(double.NegativeInfinity);
 
                 graph.Add(connectivity);
             }
 
-            for (int i = movingNodes; i < graph.Count; i++)
+            for (int i = 0; i < movingNodes; i++)
             {
-                for (int j = 0; j < movingNodes; j++)
+                for (int j = movingNodes; j < total; j++)
                 {
-                    bool forward = _rand.NextDouble() <= 0.5 ? true : false;
-                    if (graph[i][j].Distance == double.NegativeInfinity) graph[i][j].Distance = 0.0;
-                    graph[i][j].Distance = forward ? graph[i][j].Distance + _rand.NextDouble()
-                        : graph[i][j].Distance - _rand.NextDouble();
+                    graph[i][j] = graph[j][i] = _rand.NextDouble() * normalizingFactor;
+
                 }
             }
 
             return graph;
         }
 
-        private void PrintGraph(List<List<SampleFeedEdge>> result)
+        private void PrintGraph(List<List<double>> result)
         {
             result.ForEach((list) =>
             {
@@ -92,10 +88,10 @@ namespace final_uni_project
                     {
                         var g = RandomGraph(5, 2).Select((node) =>
                         {
-                            return node.Select(z => z.Distance).ToList();
+                            return node.Select(z => z).ToList();
                         }).ToList();
 
-                        DataReceived(this, new GraphArgs(g));
+                        DataReceived(this, new GraphArgs(g, 2));
                     });
 
                     await Task.Delay(300);

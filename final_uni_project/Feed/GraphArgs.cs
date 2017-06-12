@@ -8,9 +8,12 @@ namespace final_uni_project
 {
     public class GraphArgs : EventArgs
     {
-        public GraphArgs(List<List<double>> weights)
+        public int MovingTargets { get; private set; }
+
+        public GraphArgs(List<List<double>> weights, int moving)
         {
-            this.Weights = weights;
+            Weights = weights;
+            this.MovingTargets = moving;
         }
 
         public List<List<double>> Weights { get; private set; }
