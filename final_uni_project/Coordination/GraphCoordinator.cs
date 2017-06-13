@@ -19,14 +19,16 @@ namespace final_uni_project
                 DeterminePosition(vertex, graph);
         }
 
+        /// <summary>
+        /// Determine coordinates of 'vertex' relative to the state of 'graph'
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <param name="graph"></param>
         private void DeterminePosition(Vertex vertex, IBidirectionalGraph<Vertex, Edge> graph)
         {
-            if (vertex.IsReceiver)
-                vertex.Position = new Point3D(_random.Next(10), _random.Next(10), _random.Next(10));
-            else
-            {
-                vertex.Position = new Point3D(_random.NextDouble(), _random.NextDouble(), _random.NextDouble());
-            }
+            if (!vertex.IsReceiver) return;
+
+
         }
     }
 }

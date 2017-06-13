@@ -34,8 +34,7 @@ namespace final_uni_project
             {
                 for (int j = movingNodes; j < _prev[i].Count; j++)
                 {
-                    _prev[i][j] += (0.1);
-
+                    _prev[i][j] = _prev[j][i] += (0.1);
                 }
             }
 
@@ -63,7 +62,6 @@ namespace final_uni_project
                 for (int j = movingNodes; j < total; j++)
                 {
                     graph[i][j] = graph[j][i] = _rand.NextDouble() * normalizingFactor;
-
                 }
             }
 
