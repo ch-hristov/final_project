@@ -68,7 +68,7 @@ namespace final_uni_project
 
             b.Weights.ForEach(node =>
             {
-                int j = 0;
+                var j = 0;
                 foreach (var edge in node)
                 {
                     Edge e;
