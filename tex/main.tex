@@ -6,7 +6,8 @@
 \usepackage{biblatex}
 \usepackage{amsmath}
 \addbibresource{bibliography.bib}
-\newcommand\tab[1][1cm]{\hspace*{#1}}
+\usepackage{lipsum}
+\newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
 \graphicspath{ {images/} }
 
 \title{РАЗРАБОТВАНЕ НА ПЛАТФОРМА ЗА 3D ВИЗУАЛИЗАЦИЯ БАЗИРАНА НА УЛТРАЗВУКОВА СИСТЕМА ЗА ПОЗИЦИОНИРАНЕ}
@@ -18,8 +19,9 @@
 
 \maketitle
 
-\centerline{\large{Дипломна работа}}
-\centerline{\large{Бургаски свободен университет}}
+\input{header}
+
+\pagebreak
 
 \tableofcontents
 
@@ -34,7 +36,7 @@
 \input{section2}
 
 \pagebreak
-\section{Избор и обосновка на технологии за разработка}
+\section{Избор и обосновка на технологии за софтуерна разработка}
 \input{section3}
 
 \pagebreak
