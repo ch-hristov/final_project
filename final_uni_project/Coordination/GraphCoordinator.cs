@@ -1,6 +1,7 @@
 ﻿using System;
 using QuickGraph;
 using System.Windows.Media.Media3D;
+using System.Linq;
 
 namespace final_uni_project
 {
@@ -15,8 +16,18 @@ namespace final_uni_project
 
         public void Coordinate(IBidirectionalGraph<Vertex, Edge> graph)
         {
-            foreach (var vertex in graph.Vertices)
-                DeterminePosition(vertex, graph);
+            var vertexQuery = graph.Vertices.ToLookup(v => v.IsReceiver);
+
+            var staticVertices = vertexQuery[true];
+            var movingVertices = vertexQuery[false];
+
+            var first = staticVertices.Take(2);
+            var second = staticVertices.Skip(2).Take(2);
+
+            foreach(var vertex in movingVertices)
+            {
+                
+            }
         }
 
         /// <summary>
