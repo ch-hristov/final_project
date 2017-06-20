@@ -3,10 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ms="http://helix-toolkit.org/wpf"
+        xmlns:self="clr-namespace:final_uni_project"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid x:Name="grid">
-        <Label Background="Red" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding Camera.Position}"></Label>
+    <Window.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type self:MenuNode}"
+                                  ItemsSource="{Binding Path=MenuItems}">
+            <ContentPresenter Content="{Binding Path=Label}" />
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <Grid>
+        <DockPanel VerticalAlignment="Top">
+            <Menu DockPanel.Dock="Top" ItemsSource="{Binding MenuNodes}">
+            </Menu>
+        </DockPanel>
+        <Grid x:Name="grid">
+
+        </Grid>
     </Grid>
 </Window>

@@ -1,6 +1,8 @@
-﻿using HelixToolkit.Wpf;
+﻿using Alsolos.Commons.Wpf.Mvvm;
+using HelixToolkit.Wpf;
 using QuickGraph;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace final_uni_project
@@ -10,6 +12,8 @@ namespace final_uni_project
         private IDataFeed _feed;
         private IBidirectionalGraph<Vertex, Edge> _graph;
         private IGraphCoordinator Coordinator { get; set; }
+
+        public ObservableCollection<MenuNode> MenuNodes { get; set; }
 
         public IBidirectionalGraph<Vertex, Edge> Graph
         {
@@ -48,7 +52,18 @@ namespace final_uni_project
                 viewController.Load(Graph);
             };
 
+
+            MenuNodes = new ObservableCollection<MenuNode>()
+            {
+                new MenuNode(new DelegateCommand(() => OpenOptions()),"Menu"),
+            };
+
             ViewController = viewController;
+        }
+
+        private void OpenOptions()
+        {
+            throw new NotImplementedException();
         }
 
         private IBidirectionalGraph<Vertex, Edge> ParseGraph(GraphArgs b)
