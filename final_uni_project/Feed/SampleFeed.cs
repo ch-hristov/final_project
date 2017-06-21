@@ -88,28 +88,30 @@ namespace final_uni_project
 
         public void Start()
         {
-            Task.Run(async () =>
+            if (Nodes != null && Nodes.Count() > 0)
             {
-                if (Nodes == null || Nodes.Count() == 0)
+                Task.Run(async () =>
+            {
+
+                while (true)
                 {
-                    while (true)
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        await Application.Current.Dispatcher.InvokeAsync(() =>
+                        int staticCount = Nodes.Count;
+                        int movingCount = int.Parse(ConfigurationManager.AppSettings["Moving"]);
+                        var g = RandomGraph(staticCount, movingCount).Select((node) =>
                         {
-                            int staticCount = Nodes.Count;
-                            int movingCount = int.Parse(ConfigurationManager.AppSettings["Moving"]);
-                            var g = RandomGraph(staticCount, movingCount).Select((node) =>
-                            {
-                                return node.Select(z => z).ToList();
-                            }).ToList();
+                            return node.Select(z => z).ToList();
+                        }).ToList();
 
-                            DataReceived(this, new GraphArgs(g, movingCount, Nodes));
-                        });
+                        DataReceived(this, new GraphArgs(g, movingCount, Nodes));
+                    });
 
-                        await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
-                    }
+                    await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
+
                 }
             }, src.Token);
+            }
         }
 
         public void Stop()
@@ -117,7 +119,8 @@ namespace final_uni_project
             try
             {
                 src.Cancel();
-                Nodes.Clear();
+                if (Nodes != null)
+                    Nodes.Clear();
             }
             catch (OperationCanceledException) { }
         }
