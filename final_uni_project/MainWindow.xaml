@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:self="clr-namespace:final_uni_project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="3D Visualizer" Height="350" Width="525">
     <Window.Resources>
         <HierarchicalDataTemplate DataType="{x:Type self:MenuNode}"
                                   ItemsSource="{Binding Path=MenuItems}">
