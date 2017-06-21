@@ -4,6 +4,7 @@ using QuickGraph;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace final_uni_project
 {
@@ -30,6 +31,7 @@ namespace final_uni_project
 
         public VisualizeViewModel(IDataFeed feed, HelixViewport3D port)
         {
+            _feed = feed;
             _feed.Start();
 
             _feed.DataReceived += ((a, b) =>
@@ -58,7 +60,11 @@ namespace final_uni_project
 
             foreach (var node in b.Weights)
             {
-                graph.AddVertex(new Vertex(i, i < b.MovingTargets));
+                bool isStatic = i < b.MovingTargets;
+                graph.AddVertex(new Vertex(
+                    i,
+                    isStatic,
+                    isStatic ? new Vector3D(b.StaticNodes[i].X, b.StaticNodes[i].Y, b.StaticNodes[i].Z) : default(Vector3D)));
                 i++;
             }
 

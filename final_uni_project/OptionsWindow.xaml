@@ -35,6 +35,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Bottom">Confirm</Button>
+        <Button Click="Button_Click" Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Bottom">Confirm</Button>
     </Grid>
 </Window>

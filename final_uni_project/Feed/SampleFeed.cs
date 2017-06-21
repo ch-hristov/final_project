@@ -16,6 +16,9 @@ namespace final_uni_project
         private Random _rand = new Random();
         private List<List<double>> _prev;
         private const int normalizingFactor = 10;
+
+        public IList<MenuNode> Nodes { get; private set; }
+
         public SampleFeed()
         {
             src = new CancellationTokenSource();
@@ -87,21 +90,24 @@ namespace final_uni_project
         {
             Task.Run(async () =>
             {
-                while (true)
+                if (Nodes == null || Nodes.Count() == 0)
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    while (true)
                     {
-                        int staticCount = int.Parse(ConfigurationManager.AppSettings["Static"]);
-                        int movingCount = int.Parse(ConfigurationManager.AppSettings["Moving"]);
-                        var g = RandomGraph(movingCount, staticCount).Select((node) =>
+                        await Application.Current.Dispatcher.InvokeAsync(() =>
                         {
-                            return node.Select(z => z).ToList();
-                        }).ToList();
+                            int staticCount = Nodes.Count;
+                            int movingCount = int.Parse(ConfigurationManager.AppSettings["Moving"]);
+                            var g = RandomGraph(staticCount, movingCount).Select((node) =>
+                            {
+                                return node.Select(z => z).ToList();
+                            }).ToList();
 
-                        DataReceived(this, new GraphArgs(g, movingCount));
-                    });
+                            DataReceived(this, new GraphArgs(g, movingCount, Nodes));
+                        });
 
-                    await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
+                        await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
+                    }
                 }
             }, src.Token);
         }
@@ -111,13 +117,17 @@ namespace final_uni_project
             try
             {
                 src.Cancel();
+                Nodes.Clear();
             }
             catch (OperationCanceledException) { }
         }
 
         public void Configure(IEnumerable<MenuNode> nodes)
         {
-            throw new NotImplementedException();
+            if (nodes != null)
+            {
+                Nodes = nodes.ToList();
+            }
         }
     }
 }

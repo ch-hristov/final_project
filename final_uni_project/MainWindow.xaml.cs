@@ -20,12 +20,14 @@ namespace final_uni_project
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var window = new OptionsWindow();
-            window.ShowDialog();
-            var nodes = window.GetNodes();
-            var thisVm = DataContext as VisualizeViewModel;
-            feed.Stop();
-            feed.Configure(nodes);
-            feed.Start();
+            if (window.ShowDialog() == true)
+            {
+                var nodes = window.GetNodes();
+                var thisVm = DataContext as VisualizeViewModel;
+                feed.Stop();
+                feed.Configure(nodes);
+                feed.Start();
+            }
         }
     }
 }

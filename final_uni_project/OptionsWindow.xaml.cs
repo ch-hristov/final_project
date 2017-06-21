@@ -10,12 +10,17 @@ namespace final_uni_project
         {
             InitializeComponent();
             DataContext = new OptionsViewModel();
-
         }
 
         public IEnumerable<MenuNode> GetNodes()
         {
             return (DataContext as OptionsViewModel).OptionNodes;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }

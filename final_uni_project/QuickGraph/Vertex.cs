@@ -28,12 +28,13 @@ namespace final_uni_project
             }
         }
 
-        public Vertex(int id, bool isReceiver)
+        public Vertex(int id, bool isReceiver, Vector3D position = default(Vector3D))
         {
             IsReceiver = isReceiver;
             ID = id;
             var collection = new ObservableCollection<Edge>();
             Edges = collection;
+            this.Position = new Point3D(position.X, position.Y, position.Z);
         }
 
         public override bool Equals(object obj)
