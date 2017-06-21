@@ -88,6 +88,7 @@ namespace final_uni_project
 
         public void Start()
         {
+            src = new CancellationTokenSource();
             if (Nodes != null && Nodes.Count() > 0)
             {
                 Task.Run(async () =>
@@ -95,6 +96,7 @@ namespace final_uni_project
 
                 while (true)
                 {
+                    if (src.Token.IsCancellationRequested) break;
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         int staticCount = Nodes.Count;
