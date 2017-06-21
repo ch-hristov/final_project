@@ -28,10 +28,8 @@ namespace final_uni_project
 
         public ViewController ViewController { get; private set; }
 
-        public VisualizeViewModel(HelixViewport3D port)
+        public VisualizeViewModel(IDataFeed feed, HelixViewport3D port)
         {
-            _feed = new SampleFeed();
-
             _feed.Start();
 
             _feed.DataReceived += ((a, b) =>
@@ -51,11 +49,6 @@ namespace final_uni_project
             };
 
             ViewController = viewController;
-        }
-
-        private void OpenOptions()
-        {
-            throw new NotImplementedException();
         }
 
         private IBidirectionalGraph<Vertex, Edge> ParseGraph(GraphArgs b)

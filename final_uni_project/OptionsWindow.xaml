@@ -10,16 +10,31 @@
         <ItemsControl ItemsSource="{Binding OptionNodes}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                        <TextBlock>X</TextBlock>
-                        <TextBox Text="{Binding X,Mode=TwoWay}"></TextBox>
-                        <TextBlock>Y</TextBlock>
-                        <TextBox Text="{Binding Y,Mode=TwoWay}"></TextBox>
-                        <TextBlock>Z</TextBlock>
-                        <TextBox Text="{Binding Z,Mode=TwoWay}"></TextBox>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Content="{Binding Label}"></Label>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <TextBlock >X</TextBlock>
+                            <TextBox MinWidth="50" Text="{Binding X,Mode=TwoWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="5" Grid.Column="2" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <TextBlock>Y</TextBlock>
+                            <TextBox MinWidth="70" Text="{Binding Y,Mode=TwoWay}"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="5" Grid.Column="3" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <TextBlock>Z</TextBlock>
+                            <TextBox MinWidth="70" Text="{Binding Z,Mode=TwoWay}"></TextBox>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Button Margin="10"  HorizontalAlignment="Right" VerticalAlignment="Bottom">Confirm</Button>
     </Grid>
 </Window>

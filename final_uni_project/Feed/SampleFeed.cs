@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -10,10 +11,15 @@ namespace final_uni_project
 {
     public class SampleFeed : IDataFeed
     {
+        private CancellationTokenSource src;
         public event EventHandler<GraphArgs> DataReceived = delegate { };
         private Random _rand = new Random();
         private List<List<double>> _prev;
         private const int normalizingFactor = 10;
+        public SampleFeed()
+        {
+            src = new CancellationTokenSource();
+        }
 
         private List<List<double>> RandomGraph(int otherNodes, int movingNodes)
         {
@@ -97,7 +103,21 @@ namespace final_uni_project
 
                     await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
                 }
-            });
+            }, src.Token);
+        }
+
+        public void Stop()
+        {
+            try
+            {
+                src.Cancel();
+            }
+            catch (OperationCanceledException) { }
+        }
+
+        public void Configure(IEnumerable<MenuNode> nodes)
+        {
+            throw new NotImplementedException();
         }
     }
 }

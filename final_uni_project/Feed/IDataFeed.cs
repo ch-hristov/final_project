@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace final_uni_project
 {
@@ -7,5 +8,7 @@ namespace final_uni_project
         event EventHandler<GraphArgs> DataReceived;
 
         void Start();
+        void Stop();
+        void Configure(IEnumerable<MenuNode> nodes);
     }
 }

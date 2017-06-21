@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace final_uni_project
 {
@@ -9,6 +11,11 @@ namespace final_uni_project
             InitializeComponent();
             DataContext = new OptionsViewModel();
 
+        }
+
+        public IEnumerable<MenuNode> GetNodes()
+        {
+            return (DataContext as OptionsViewModel).OptionNodes;
         }
     }
 }
