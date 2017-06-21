@@ -1,0 +1,25 @@
+﻿<Window x:Class="final_uni_project.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:final_uni_project"
+        mc:Ignorable="d"
+        Title="Options" Height="300" Width="300">
+    <Grid>
+        <ItemsControl ItemsSource="{Binding OptionNodes}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                        <TextBlock>X</TextBlock>
+                        <TextBox Text="{Binding X,Mode=TwoWay}"></TextBox>
+                        <TextBlock>Y</TextBlock>
+                        <TextBox Text="{Binding Y,Mode=TwoWay}"></TextBox>
+                        <TextBlock>Z</TextBlock>
+                        <TextBox Text="{Binding Z,Mode=TwoWay}"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

@@ -13,8 +13,6 @@ namespace final_uni_project
         private IBidirectionalGraph<Vertex, Edge> _graph;
         private IGraphCoordinator Coordinator { get; set; }
 
-        public ObservableCollection<MenuNode> MenuNodes { get; set; }
-
         public IBidirectionalGraph<Vertex, Edge> Graph
         {
             get
@@ -50,12 +48,6 @@ namespace final_uni_project
             {
                 Coordinator.Coordinate(Graph);
                 viewController.Load(Graph);
-            };
-
-
-            MenuNodes = new ObservableCollection<MenuNode>()
-            {
-                new MenuNode(new DelegateCommand(() => OpenOptions()),"Menu"),
             };
 
             ViewController = viewController;

@@ -14,5 +14,11 @@ namespace final_uni_project
             port.ItemsSource = vm.ViewController.Models;
             grid.Children.Add(port);
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            OptionsWindow window = new OptionsWindow();
+            window.ShowDialog();
+        }
     }
 }
