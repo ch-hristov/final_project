@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:self="clr-namespace:final_uni_project"
         mc:Ignorable="d"
-        Title="3D Visualizer" Height="350" Width="525">
+        Title="3D Visualizer" Height="480" Width="640">
+
     <Window.Resources>
         <HierarchicalDataTemplate DataType="{x:Type self:MenuNode}"
                                   ItemsSource="{Binding Path=MenuItems}">
             <ContentPresenter Content="{Binding Path=Label}" />
         </HierarchicalDataTemplate>
     </Window.Resources>
-    <Grid>
-        <DockPanel MinHeight="35" VerticalAlignment="Top">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Options" Click="MenuItem_Click"></MenuItem>
-            </Menu>
-        </DockPanel>
-        <Grid VerticalAlignment="Bottom" MinHeight="300" x:Name="grid">
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Options" Click="MenuItem_Click"></MenuItem>
+            <MenuItem Header="_Connect" Click="MenuItem_Click_1"></MenuItem>
+            <MenuItem Header="_Script" Click="MenuItem_Click_2"></MenuItem>
+        </Menu>
+        <Grid Name="grid">
 
         </Grid>
-    </Grid>
+    </DockPanel>
 </Window>

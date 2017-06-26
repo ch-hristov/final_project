@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace final_uni_project
 {
     public class MenuNode : INotifyPropertyChanged
     {
-        public MenuNode(string label)
+        public MenuNode(string label, Point3D pt)
         {
-            this.Label = label;
+            Id = label;
+            this.X = pt.X;
+            this.Y = pt.Y;
+            this.Z = pt.Z;
         }
-        public string Label { get; set; }
 
         private double x;
         public double X
@@ -29,5 +32,20 @@ namespace final_uni_project
         public double Z { get { return z; } set { z = value; PropertyChanged(this, new PropertyChangedEventArgs("Z")); } }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+
+        private string id;
+        public string Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                this.id = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Id"));
+            }
+        }
     }
 }

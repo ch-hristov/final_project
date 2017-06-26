@@ -60,11 +60,11 @@ namespace final_uni_project
 
             foreach (var node in b.Weights)
             {
-                bool isStatic = i < b.MovingTargets;
+                bool isStatic = i >= b.MovingTargets;
                 graph.AddVertex(new Vertex(
                     i,
                     isStatic,
-                    isStatic ? new Vector3D(b.StaticNodes[i].X, b.StaticNodes[i].Y, b.StaticNodes[i].Z) : default(Vector3D)));
+                    isStatic ? new Vector3D(b.StaticNodes[i - b.MovingTargets].X, b.StaticNodes[i - b.MovingTargets].Y, b.StaticNodes[i - b.MovingTargets].Z) : default(Vector3D)));
                 i++;
             }
 

@@ -7,31 +7,27 @@
         mc:Ignorable="d"
         Title="Options" Height="300" Width="300">
     <Grid>
-        <ItemsControl ItemsSource="{Binding OptionNodes}">
+        <ItemsControl ItemsSource="{Binding OptionNodes}" HorizontalAlignment="Center">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" Content="{Binding Label}"></Label>
-                        <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <TextBlock >X</TextBlock>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock MinWidth="50">ID</TextBlock>
+                            <TextBlock MinWidth="50">X</TextBlock>
+                            <TextBlock MinWidth="50">Y</TextBlock>
+                            <TextBlock MinWidth="50">Z</TextBlock>
+                        </StackPanel>   
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox MinWidth="50" Text="{Binding Id,Mode=TwoWay}"></TextBox>
                             <TextBox MinWidth="50" Text="{Binding X,Mode=TwoWay}"></TextBox>
-                        </StackPanel>
-                        <StackPanel Margin="5" Grid.Column="2" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <TextBlock>Y</TextBlock>
-                            <TextBox MinWidth="70" Text="{Binding Y,Mode=TwoWay}"></TextBox>
-                        </StackPanel>
-                        <StackPanel Margin="5" Grid.Column="3" HorizontalAlignment="Stretch" Orientation="Horizontal">
-                            <TextBlock>Z</TextBlock>
-                            <TextBox MinWidth="70" Text="{Binding Z,Mode=TwoWay}"></TextBox>
-                        </StackPanel>
-                    </Grid>
+                            <TextBox MinWidth="50" Text="{Binding Y,Mode=TwoWay}"></TextBox>
+                            <TextBox MinWidth="50" Text="{Binding Z,Mode=TwoWay}"></TextBox>
+                       </StackPanel>
+                    </StackPanel>
+                    
+    
+                    
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
