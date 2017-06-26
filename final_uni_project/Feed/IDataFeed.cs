@@ -10,5 +10,8 @@ namespace final_uni_project
         void Start();
         void Stop();
         void Configure(IEnumerable<MenuNode> nodes);
+
+        void Push(Dictionary<string, List<Tuple<string, double>>> moving, Dictionary<string, List<Tuple<string, double>>> all);
+
     }
 }

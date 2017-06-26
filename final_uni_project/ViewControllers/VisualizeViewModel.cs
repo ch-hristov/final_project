@@ -4,6 +4,7 @@ using QuickGraph;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace final_uni_project
@@ -37,7 +38,12 @@ namespace final_uni_project
             _feed.DataReceived += ((a, b) =>
               {
                   Graph = ParseGraph(b);
-                  Updated(this, new EventArgs());
+
+                  Application.Current.Dispatcher.InvokeAsync(() =>
+                  {
+                      Updated(this, new EventArgs());
+                  });
+
               });
 
             Coordinator = new GraphCoordinator();

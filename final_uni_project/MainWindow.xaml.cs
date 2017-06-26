@@ -20,7 +20,7 @@ namespace final_uni_project
             InitializeComponent();
             var port = new HelixViewport3D();
 
-            feed = new SampleFeed();
+            feed = new DataFeed();
             var vm = new VisualizeViewModel(feed, port);
 
             port.ItemsSource = vm.ViewController.Models;
@@ -52,7 +52,7 @@ namespace final_uni_project
         private void Window_onPortSelected(SerialInterface port)
         {
             try
-            { 
+            {
                 _port = port;
                 _port.NewSerialDataRecieved += DataRecieved;
                 _port.StartListening();
@@ -124,22 +124,29 @@ namespace final_uni_project
                 catch (Exception ex) {; ; }
             }
 
+            var nd = new Dictionary<string, List<Tuple<string, double>>>();
+
             // Chorbata na Ico
             var rem = new List<string>();
+
             foreach (var node in graph)
                 if (nodes.Any(x => x.Id == node.Key))
                     rem.Add(node.Key);
 
-            foreach (var i in rem)
-                graph.Remove(i);
+            foreach (var i in graph)
+                if (!rem.Contains(i.Key))
+                    nd.Add(i.Key, new List<Tuple<string, double>>(graph[i.Key].Select(x => new Tuple<string, double>(x.Item1, x.Item2))));
 
 
+            feed.Push(nd, graph);
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            var window = new ScryptWindow();
-            window._port = this._port;
+            var window = new ScryptWindow()
+            {
+                _port = _port
+            };
             window.Show();
         }
     }

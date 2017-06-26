@@ -106,7 +106,7 @@ namespace final_uni_project
                             return node.Select(z => z).ToList();
                         }).ToList();
 
-                        DataReceived(this, new GraphArgs(g, movingCount, Nodes));
+                        //DataReceived(this, new GraphArgs(g, movingCount, Nodes));
                     });
 
                     await Task.Delay(int.Parse(ConfigurationManager.AppSettings["TickTime"]));
@@ -133,6 +133,11 @@ namespace final_uni_project
             {
                 Nodes = nodes.ToList();
             }
+        }
+
+        public void Push(Dictionary<string, List<Tuple<string, double>>> moving, Dictionary<string, List<Tuple<string, double>>> all)
+        {
+            throw new NotImplementedException();
         }
     }
 }
