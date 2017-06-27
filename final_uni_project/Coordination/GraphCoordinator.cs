@@ -89,39 +89,20 @@ namespace final_uni_project
             var B = Vector<double>.Build.Dense(new double[] { b21, b31, b41 });
 
             var X = A.Solve(B);
-            int sp = -1;
 
-            var pt = new Point3D(X[0], X[1], X[2]);
+            var vectPoint = new Vector3D(X[0], X[1], X[2]);
 
-            sp = GetScaleIndex(X, sp);
-            var dist = Euclidean(pt, points[0].Position);
-            if (sp == 0)
-            {
-                var y = X[1] - points[0].Position.Y;
-                var z = X[2] - points[0].Position.Z;
-                var V = points[0].Position.X + Math.Sqrt(dist * dist - y * y - z * z);
-                X[0] = V;
-            }
-            if (sp == 1)
-            {
-                var x = X[0] - points[0].Position.X;
-                var z = X[2] - points[0].Position.Z;
-                var V = points[0].Position.Y + Math.Sqrt(dist * dist - x * x - z * z);
-                X[1] = V;
-            }
-            if (sp == 2)
-            {
-                var x = X[0] - points[0].Position.X;
-                var y = X[1] - points[0].Position.Y;
-                var V = points[0].Position.Y + Math.Sqrt(dist * dist - x * x - y * y);
-                X[2] = V;
-            }
+            var vectors = new[] { points[0], points[1], points[2], points[3] }
+                                .Select(n => new Vector3D(n.Position.X, n.Position.Y, n.Position.Z));
 
+            var mid = vectors.Aggregate((curr, next) => { return curr += next; }) / vectors.Count();
+            var midToPoint = mid - vectPoint;
+            var length = midToPoint.Length;
+            midToPoint.Normalize();
 
+            var final = midToPoint * (0.0001 * length);
 
-            vertex.Position = new Point3D(X[0], X[1], X[2]);
-
-            Debug.WriteLine(vertex.Position);
+            vertex.Position = new Point3D(final.X, final.Y, final.Z);
         }
 
         private static int GetScaleIndex(Vector<double> X, int sp)

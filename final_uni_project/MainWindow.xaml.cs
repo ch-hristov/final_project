@@ -71,7 +71,7 @@ namespace final_uni_project
         private string dataBlock = null;
         private IEnumerable<MenuNode> nodes;
 
-        private async void DataRecieved(object sender, SerialDataEventArgs e)
+        private void DataRecieved(object sender, SerialDataEventArgs e)
         {
 
             var graph = new Dictionary<string, List<Tuple<string, double>>>();
