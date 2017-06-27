@@ -8,16 +8,20 @@ namespace final_uni_project
 {
     public class GraphArgs : EventArgs
     {
-        public int MovingTargets { get; private set; }
+        public Dictionary<int, List<Tuple<int, double>>> MovingTargets { get; private set; }
 
-        public GraphArgs(List<List<Tuple<string, double>>> weights, int moving, IList<MenuNode> nodes)
+        public GraphArgs(
+            Dictionary<int, List<Tuple<int, double>>> weights,
+            Dictionary<int, List<Tuple<int, double>>> moving,
+            IList<MenuNode> nodes)
         {
-            Weights = weights;
-            this.MovingTargets = moving;
-            this.StaticNodes = nodes;
+            StaticVertices = weights;
+            MovingTargets = moving;
+            StaticNodes = nodes;
         }
 
-        public List<List<Tuple<string, double>>> Weights { get; private set; }
+        public Dictionary<int, List<Tuple<int, double>>> StaticVertices { get; private set; }
+
         public IList<MenuNode> StaticNodes { get; private set; }
     }
 }

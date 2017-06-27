@@ -45,7 +45,7 @@ namespace final_uni_project
                 Models.Add(visual = new SphereVisual3D()
                 {
                     Center = node.Position,
-                    Radius = node.IsReceiver ? 1 : 0.2,
+                    Radius = 10,
                     Fill = node.IsReceiver ? Brushes.Red : Brushes.Green,
                     BackMaterial = new DiffuseMaterial(Brushes.Red)
                 });

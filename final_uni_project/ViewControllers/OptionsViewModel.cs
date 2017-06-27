@@ -20,16 +20,16 @@ namespace final_uni_project
                 switch (i)
                 {
                     case 0:
-                        pt = new Point3D(0, 0, 0);
+                        pt = new Point3D(10.321, 10.432, 10.532);
                         break;
                     case 1:
-                        pt = new Point3D(100, 0, 0);
+                        pt = new Point3D(1000.321, 10.321314, 10.435);
                         break;
                     case 2:
-                        pt = new Point3D(100, 0, 100);
+                        pt = new Point3D(1000.312, 10.352, 1000.534);
                         break;
                     case 3:
-                        pt = new Point3D(0, 0, 100);
+                        pt = new Point3D(10.213, 10.532, 1000.21);
                         break;
                     default:
                         break;

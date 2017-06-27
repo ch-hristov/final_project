@@ -36,15 +36,17 @@ namespace final_uni_project
             _feed.Start();
 
             _feed.DataReceived += ((a, b) =>
-              {
-                  Graph = ParseGraph(b);
-
-                  Application.Current.Dispatcher.InvokeAsync(() =>
-                  {
-                      Updated(this, new EventArgs());
-                  });
-
-              });
+             {
+                 try
+                 {
+                     Application.Current.Dispatcher.InvokeAsync(() =>
+                     {
+                         Graph = ParseGraph(b);
+                         Updated(this, new EventArgs());
+                     });
+                 }
+                 catch (Exception) { }
+             });
 
             Coordinator = new GraphCoordinator();
 
@@ -62,38 +64,34 @@ namespace final_uni_project
         private IBidirectionalGraph<Vertex, Edge> ParseGraph(GraphArgs b)
         {
             var graph = new BidirectionalGraph<Vertex, Edge>();
-            int i = 0;
 
-            foreach (var node in b.Weights)
+            var edgeQ = b.StaticVertices.Union(b.MovingTargets)
+                                        .ToDictionary(x => x.Key, y => y.Value);
+
+            foreach (var node in b.StaticVertices)
             {
-                bool isStatic = i >= b.MovingTargets;
-                graph.AddVertex(new Vertex(
-                    i,
-                    isStatic,
-                    isStatic ? new Vector3D(b.StaticNodes[i - b.MovingTargets].X, b.StaticNodes[i - b.MovingTargets].Y, b.StaticNodes[i - b.MovingTargets].Z) : default(Vector3D)));
-                i++;
+                var query = b.StaticNodes.FirstOrDefault(x => int.Parse(x.Id) == node.Key);
+                graph.AddVertex(new Vertex(node.Key, true, new Vector3D(query.X, query.Y, query.Z)));
             }
+
+            foreach (var node in b.MovingTargets)
+                graph.AddVertex(new Vertex(node.Key, false));
 
             var vertices = graph.Vertices.ToList();
 
-            i = 0;
-
-            b.Weights.ForEach(node =>
+            foreach (var vertex in vertices)
             {
-                var j = 0;
-                foreach (var edge in node)
+                foreach (var edge in edgeQ[vertex.ID])
                 {
-                    Edge e;
-                    graph.AddEdge(e = new Edge(vertices[i], vertices[j])
+                    var q = vertices.FirstOrDefault(x => x.ID == edge.Item1);
+                    if (q == null) continue;
+                    var e = new Edge(vertex, q)
                     {
-                        Weight = edge
-                    });
-
-                    vertices[i].Edges.Add(e);
-                    j++;
+                        Weight = edge.Item2
+                    };
+                    graph.AddEdge(e);
                 }
-                i++;
-            });
+            }
 
             return graph;
         }

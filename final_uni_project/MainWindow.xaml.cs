@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace final_uni_project
 {
@@ -63,82 +65,78 @@ namespace final_uni_project
             }
         }
 
-
         /// <summary>
         /// Serial Interface On Data Received variables
         /// </summary>
         private string dataBlock = null;
-        private Dictionary<string, List<Tuple<string, double>>> graph = new Dictionary<string, List<Tuple<string, double>>>();
-        private Dictionary<string, Point> points = new Dictionary<string, Point>();
         private IEnumerable<MenuNode> nodes;
 
-        private void DataRecieved(object sender, SerialDataEventArgs e)
+        private async void DataRecieved(object sender, SerialDataEventArgs e)
         {
-            string dataReceived = Encoding.ASCII.GetString(e.Data);
 
-            // Forming Data Block
-            if (dataReceived.Length > 0) dataBlock += dataReceived;
-            string[] splittedDataBlock = dataBlock.Split(new char[] { '\n' });
-
-            //  Process Received Data   
-            foreach (var line in splittedDataBlock)
+            await Task.Run(() =>
             {
+                var graph = new Dictionary<string, List<Tuple<string, double>>>();
                 try
                 {
-                    // Find measurements
-                    if (line.Contains("R") && line.Contains("T") && line.Contains("A") && line.IndexOf("A") != line.Length - 1)
-                    {
-                        // "R" = _node, "T" = _key, "A" = _value 
-                        string _node = line.Substring(line.IndexOf("R") + 1, line.IndexOf("T") - line.IndexOf("R") - 2);
-                        string _key = line.Substring(line.IndexOf("T") + 1, line.IndexOf("Q") - line.IndexOf("T") - 2);
-                        double _value = double.Parse(line.Substring(line.IndexOf("A") + 1, line.Length - line.IndexOf("A") - 1));
+                    string dataReceived = Encoding.ASCII.GetString(e.Data);
 
-                        // without self connected nodes
-                        if (_node != _key)
+                   // Forming Data Block
+                   if (dataReceived.Length > 0)
+                        dataBlock += dataReceived;
+
+                    var splittedDataBlock = dataBlock.Split(new char[] { '\n' }).Reverse().Take(20).Reverse();
+
+                   //  Process Received Data   
+                   foreach (var line in splittedDataBlock)
+                    {
+                       // Find measurements
+                       if (line.Contains("R") && line.Contains("T") && line.Contains("A") && line.IndexOf("A") != line.Length - 1)
                         {
-                            // If node exist?
-                            if (graph.ContainsKey(_node))
+                           // "R" = _node, "T" = _key, "A" = _value 
+                           var _node = line.Substring(line.IndexOf("R") + 1, line.IndexOf("T") - line.IndexOf("R") - 2);
+                            var _key = line.Substring(line.IndexOf("T") + 1, line.IndexOf("Q") - line.IndexOf("T") - 2);
+                            var _value = double.Parse(line.Substring(line.IndexOf("A") + 1, line.Length - line.IndexOf("A") - 1));
+
+                           // without self connected nodes
+                           if (_node != _key)
                             {
-                                Tuple<string, double> Exist = graph[_node].Find(i => i.Item1 == _key);
-                                if (Exist != null)
+                               // If node exist?
+                               if (graph.ContainsKey(_node))
                                 {
-                                    // update connection
-                                    graph[_node].Remove(Exist);
-                                    graph[_node].Add(new Tuple<string, double>(_key, _value));
+                                    var exists = graph[_node].FirstOrDefault(x => x.Item1 == _node);
+                                    if (exists != null)
+                                    {
+                                       // update connection
+                                       graph[_node].Remove(exists);
+                                        graph[_node].Add(new Tuple<string, double>(_key, _value));
+                                    }
+                                    else
+                                    {
+                                       // add new connection
+                                       graph[_node].Add(new Tuple<string, double>(_key, _value));
+                                    }
+
                                 }
                                 else
                                 {
-                                    // add new connection
-                                    graph[_node].Add(new Tuple<string, double>(_key, _value));
+                                   // add new node
+                                   graph.Add(_node, new List<Tuple<string, double>>() { new Tuple<string, double>(_key, _value) });
                                 }
-
-                            }
-                            else
-                            {
-                                // add new node
-                                graph.Add(_node, new List<Tuple<string, double>>() { new Tuple<string, double>(_key, _value) });
                             }
                         }
                     }
+
+                    var rem = new List<string>();
+
+                    foreach (var node in graph)
+                        if (nodes.Any(x => x.Id == node.Key))
+                            rem.Add(node.Key);
+
+                    feed.Push(graph.Where(v => !rem.Contains(v.Key)).ToDictionary(x => x.Key, y => y.Value), graph);
                 }
-                catch (Exception ex) {; ; }
-            }
-
-            var nd = new Dictionary<string, List<Tuple<string, double>>>();
-
-            // Chorbata na Ico
-            var rem = new List<string>();
-
-            foreach (var node in graph)
-                if (nodes.Any(x => x.Id == node.Key))
-                    rem.Add(node.Key);
-
-            foreach (var i in graph)
-                if (!rem.Contains(i.Key))
-                    nd.Add(i.Key, new List<Tuple<string, double>>(graph[i.Key].Select(x => new Tuple<string, double>(x.Item1, x.Item2))));
-
-
-            feed.Push(nd, graph);
+                catch (Exception) { }
+            });
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)

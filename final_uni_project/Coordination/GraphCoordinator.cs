@@ -4,6 +4,7 @@ using System.Windows.Media.Media3D;
 using System.Linq;
 using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
+using System.Diagnostics;
 
 namespace final_uni_project
 {
@@ -19,13 +20,15 @@ namespace final_uni_project
         public void Coordinate(IBidirectionalGraph<Vertex, Edge> graph)
         {
             var vertexQuery = graph.Vertices.ToLookup(v => v.IsReceiver);
-
-            var staticVertices = vertexQuery[true];
             var movingVertices = vertexQuery[false];
 
             foreach (var vertex in movingVertices)
             {
-                DeterminePosition(vertex, graph);
+                try
+                {
+                    DeterminePosition(vertex, graph);
+                }
+                catch (Exception ex) { }
             }
         }
 
@@ -47,15 +50,19 @@ namespace final_uni_project
             var d31 = Euclidean(points[2].Position, points[0].Position);
             var d41 = Euclidean(points[3].Position, points[0].Position);
 
+            Edge e;
+            graph.TryGetEdge(vertex, points[0], out e);
+            var r1 = e.Weight;
+            graph.TryGetEdge(vertex, points[1], out e);
+            var r2 = e.Weight;
+            graph.TryGetEdge(vertex, points[2], out e);
+            var r3 = e.Weight;
+            graph.TryGetEdge(vertex, points[3], out e);
+            var r4 = e.Weight;
 
-            var r1 = vertex.Edges.FirstOrDefault(n => n.Target == points[0]).Weight;
-            var r2 = vertex.Edges.FirstOrDefault(n => n.Target == points[1]).Weight;
-            var r3 = vertex.Edges.FirstOrDefault(n => n.Target == points[2]).Weight;
-            var r4 = 123;//vertex.Edges.FirstOrDefault(n => n.Target == points[3]).Weight;
-
-            double b21 = (Math.Pow(r1, 2) - Math.Pow(r2, 2) + Math.Pow(d21, 2)) / 2;
-            double b31 = (Math.Pow(r1, 2) - Math.Pow(r3, 2) + Math.Pow(d31, 2)) / 2;
-            double b41 = (Math.Pow(r1, 2) - Math.Pow(r4, 2) + Math.Pow(d41, 2)) / 2;
+            var b21 = (Math.Pow(r1, 2) - Math.Pow(r2, 2) + Math.Pow(d21, 2)) / 2;
+            var b31 = (Math.Pow(r1, 2) - Math.Pow(r3, 2) + Math.Pow(d31, 2)) / 2;
+            var b41 = (Math.Pow(r1, 2) - Math.Pow(r4, 2) + Math.Pow(d41, 2)) / 2;
 
 
             // Linear Equation Systems
@@ -68,9 +75,60 @@ namespace final_uni_project
             });
 
             var B = Vector<double>.Build.Dense(new double[] { b21, b31, b41 });
+
             var X = A.Solve(B);
+            int sp = -1;
+
+            var pt = new Point3D(X[0], X[1], X[2]);
+
+            sp = GetScaleIndex(X, sp);
+            var dist = Euclidean(pt, points[0].Position);
+            if (sp == 0)
+            {
+                var y = X[1] - points[0].Position.Y;
+                var z = X[2] - points[0].Position.Z;
+                var V = points[0].Position.X + Math.Sqrt(dist * dist - y * y - z * z);
+                X[0] = V;
+            }
+            if (sp == 1)
+            {
+                var x = X[0] - points[0].Position.X;
+                var z = X[2] - points[0].Position.Z;
+                var V = points[0].Position.Y + Math.Sqrt(dist * dist - x * x - z * z);
+                X[1] = V;
+            }
+            if (sp == 2)
+            {
+                var x = X[0] - points[0].Position.X;
+                var y = X[1] - points[0].Position.Y;
+                var V = points[0].Position.Y + Math.Sqrt(dist * dist - x * x - y * y);
+                X[2] = V;
+            }
+
+
 
             vertex.Position = new Point3D(X[0], X[1], X[2]);
+
+            Debug.WriteLine(vertex.Position);
+        }
+
+        private static int GetScaleIndex(Vector<double> X, int sp)
+        {
+            for (int i = 0; i < X.Count; i++)
+            {
+                for (int j = 0; j < X.Count; j++)
+                {
+                    if (X[i] >= X[j] * 10)
+                    {
+                        sp = i;
+                        break;
+                    }
+                }
+                if (sp != -1)
+                    break;
+            }
+
+            return sp;
         }
 
 

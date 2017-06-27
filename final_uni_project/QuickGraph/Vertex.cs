@@ -14,27 +14,12 @@ namespace final_uni_project
 
         public bool IsReceiver { get; private set; }
 
-        private ICollection<Edge> _edges;
-        public ICollection<Edge> Edges
-        {
-            get
-            {
-                return _edges;
-            }
-            set
-            {
-                _edges = value;
-
-            }
-        }
-
         public Vertex(int id, bool isReceiver, Vector3D position = default(Vector3D))
         {
             IsReceiver = isReceiver;
             ID = id;
             var collection = new ObservableCollection<Edge>();
-            Edges = collection;
-            this.Position = new Point3D(position.X, position.Y, position.Z);
+            Position = new Point3D(position.X, position.Y, position.Z);
         }
 
         public override bool Equals(object obj)
@@ -51,11 +36,6 @@ namespace final_uni_project
         public override int GetHashCode()
         {
             return ID;
-        }
-
-        public bool IsConnectedTo(Vertex v)
-        {
-            return Edges.Any(edge => edge.Target == v && !double.IsNegativeInfinity(edge.Weight));
         }
     }
 }

@@ -17,15 +17,17 @@ namespace final_uni_project
 
         public void Push(Dictionary<string, List<Tuple<string, double>>> moving, Dictionary<string, List<Tuple<string, double>>> all)
         {
-            var data = new List<List<Tuple<string, double>>>();
+            var movingData = new Dictionary<int, List<Tuple<int, double>>>();
+            var staticData = new Dictionary<int, List<Tuple<int, double>>>();
+
 
             foreach (var node in moving)
-                data.Add(node.Value.Select(x => x).ToList());
+                movingData.Add(int.Parse(node.Key), node.Value.Select(x => new Tuple<int, double>(int.Parse(x.Item1), x.Item2)).ToList());
 
             foreach (var node in all.Where(t => !moving.ContainsKey(t.Key)))
-                data.Add(node.Value.Select(z => z).ToList());
+                staticData.Add(int.Parse(node.Key), node.Value.Select(z => new Tuple<int, double>(int.Parse(z.Item1), z.Item2)).ToList());
 
-            DataReceived(this, new GraphArgs(data, moving.Count, nodes.ToList()));
+            DataReceived(this, new GraphArgs(staticData, movingData, nodes.ToList()));
         }
 
         public void Start()
