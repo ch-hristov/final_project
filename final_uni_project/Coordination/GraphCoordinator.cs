@@ -51,13 +51,25 @@ namespace final_uni_project
             var d41 = Euclidean(points[3].Position, points[0].Position);
 
             Edge e;
-            graph.TryGetEdge(vertex, points[0], out e);
+            if (!graph.TryGetEdge(vertex, points[0], out e))
+            {
+                return;
+            }
             var r1 = e.Weight;
-            graph.TryGetEdge(vertex, points[1], out e);
+            if (!graph.TryGetEdge(vertex, points[1], out e))
+            {
+                return;
+            }
             var r2 = e.Weight;
-            graph.TryGetEdge(vertex, points[2], out e);
+            if (!graph.TryGetEdge(vertex, points[2], out e))
+            {
+                return;
+            }
             var r3 = e.Weight;
-            graph.TryGetEdge(vertex, points[3], out e);
+            if (!graph.TryGetEdge(vertex, points[3], out e))
+            {
+                return;
+            }
             var r4 = e.Weight;
 
             var b21 = (Math.Pow(r1, 2) - Math.Pow(r2, 2) + Math.Pow(d21, 2)) / 2;
