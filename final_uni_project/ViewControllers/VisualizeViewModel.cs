@@ -11,6 +11,7 @@ namespace final_uni_project
 {
     public class VisualizeViewModel
     {
+        private object _lock = new object();
         private IDataFeed _feed;
         private IBidirectionalGraph<Vertex, Edge> _graph;
         private IGraphCoordinator Coordinator { get; set; }
@@ -54,8 +55,11 @@ namespace final_uni_project
 
             Updated += (a, b) =>
             {
-                Coordinator.Coordinate(Graph);
-                viewController.Load(Graph);
+                lock (_lock)
+                {
+                    Coordinator.Coordinate(Graph);
+                    viewController.Load(Graph);
+                }
             };
 
             ViewController = viewController;

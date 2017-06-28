@@ -40,7 +40,6 @@ namespace final_uni_project
         private void DeterminePosition(Vertex vertex, IBidirectionalGraph<Vertex, Edge> graph)
         {
             if (vertex.IsReceiver) return;
-
             if (graph.VertexCount != 5) return;
 
             // Points
@@ -51,31 +50,19 @@ namespace final_uni_project
             var d41 = Euclidean(points[3].Position, points[0].Position);
 
             Edge e;
-            if (!graph.TryGetEdge(vertex, points[0], out e))
-            {
-                return;
-            }
+            if (!graph.TryGetEdge(vertex, points[0], out e)) return;
             var r1 = e.Weight;
-            if (!graph.TryGetEdge(vertex, points[1], out e))
-            {
-                return;
-            }
+            if (!graph.TryGetEdge(vertex, points[1], out e)) return;
             var r2 = e.Weight;
-            if (!graph.TryGetEdge(vertex, points[2], out e))
-            {
-                return;
-            }
+            if (!graph.TryGetEdge(vertex, points[2], out e)) return;
             var r3 = e.Weight;
-            if (!graph.TryGetEdge(vertex, points[3], out e))
-            {
-                return;
-            }
+            if (!graph.TryGetEdge(vertex, points[3], out e)) return;
             var r4 = e.Weight;
 
+            // Math
             var b21 = (Math.Pow(r1, 2) - Math.Pow(r2, 2) + Math.Pow(d21, 2)) / 2;
             var b31 = (Math.Pow(r1, 2) - Math.Pow(r3, 2) + Math.Pow(d31, 2)) / 2;
             var b41 = (Math.Pow(r1, 2) - Math.Pow(r4, 2) + Math.Pow(d41, 2)) / 2;
-
 
             // Linear Equation Systems
             // http://numerics.mathdotnet.com/LinearEquations.html
@@ -85,24 +72,36 @@ namespace final_uni_project
                 {points[2].Position.X-points[0].Position.X,points[2].Position.Y - points[0].Position.Y,points[2].Position.Z-points[0].Position.Z },
                 {points[3].Position.X-points[0].Position.X,points[3].Position.Y - points[0].Position.Y,points[3].Position.Z-points[0].Position.Z }
             });
-
             var B = Vector<double>.Build.Dense(new double[] { b21, b31, b41 });
-
             var X = A.Solve(B);
 
+            // Normalization
+            var finalPosition = NormalizePosition(points, X);
+            vertex.Position = new Point3D(finalPosition.X, finalPosition.Y, finalPosition.Z);
+        }
+
+
+        /// <summary>
+        /// A method for normalization based on empirical studies of the output for the current sensor
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="X"></param>
+        /// <returns></returns>
+        private static Vector3D NormalizePosition(List<Vertex> points, Vector<double> X)
+        {
             var vectPoint = new Vector3D(X[0], X[1], X[2]);
 
             var vectors = new[] { points[0], points[1], points[2], points[3] }
-                                .Select(n => new Vector3D(n.Position.X, n.Position.Y, n.Position.Z));
+                                .Select(n => new Vector3D(n.Position.X, n.Position.Y, n.Position.Z)).ToList();
 
-            var mid = vectors.Aggregate((curr, next) => { return curr += next; }) / vectors.Count();
+            var mid = vectors.Aggregate((curr, next) => { return curr += next; }) / vectors.Count;
             var midToPoint = mid - vectPoint;
             var length = midToPoint.Length;
+
             midToPoint.Normalize();
 
             var final = midToPoint * (0.0001 * length);
-
-            vertex.Position = new Point3D(final.X, final.Y, final.Z);
+            return final;
         }
 
         private static int GetScaleIndex(Vector<double> X, int sp)

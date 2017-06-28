@@ -31,6 +31,10 @@ namespace final_uni_project
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        /// <summary>
+        /// Load visual models
+        /// </summary>
+        /// <param name="graph"></param>
         public void Load(IBidirectionalGraph<Vertex, Edge> graph)
         {
             Models.Clear();
@@ -68,8 +72,6 @@ namespace final_uni_project
                     _edgeVisuals.Add(edge, lv3);
                 }
             }
-
-            //RenderPlane();
         }
 
         //private void RenderPlane()
