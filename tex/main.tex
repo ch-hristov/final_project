@@ -5,10 +5,20 @@
 \usepackage{titlesec}
 \usepackage{biblatex}
 \usepackage{amsmath}
+\usepackage{listings}
 \addbibresource{bibliography.bib}
 \usepackage{lipsum}
 \newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
 \graphicspath{ {images/} }
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
 
 \title{РАЗРАБОТВАНЕ НА ПЛАТФОРМА ЗА 3D ВИЗУАЛИЗАЦИЯ БАЗИРАНА НА УЛТРАЗВУКОВА СИСТЕМА ЗА ПОЗИЦИОНИРАНЕ}
 
@@ -26,12 +36,12 @@
 \tableofcontents
 
 \pagebreak
-\section{Въведение}
+\section{Увод, цел и задачи}
 
 \input{section1}
-
+    
 \pagebreak
-\section{Характеристика и сравнителен анализ на алгоритми за позициониране}
+\section{Характеристика и сравнителен анализ на ултразвукови системи за позициониране}
 
 \input{section2}
 

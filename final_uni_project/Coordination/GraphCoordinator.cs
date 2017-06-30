@@ -77,6 +77,8 @@ namespace final_uni_project
 
             // Normalization
             var finalPosition = NormalizePosition(points, X);
+            Debug.WriteLine(finalPosition);
+
             vertex.Position = new Point3D(finalPosition.X, finalPosition.Y, finalPosition.Z);
         }
 
